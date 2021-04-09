@@ -3,7 +3,8 @@ import AppHeader from '../app-header';
 import SearchPanel from '../search-panel';
 import PostStatusFilter from '../post-status-filter';
 import PostList from '../post-list';
-import PostAddForm from '../post-add-form';
+import PostAddForm from "../post-add-form";
+
 
 import './app.css';
 import styled from 'styled-components';
@@ -13,12 +14,13 @@ const MainSearchPanel = styled.div`
 	display: flex;
 	margin: 1rem 0;
 
-	.search-panel .search-input {
+	.search-input {
 		width: auto;
 		flex-grow: 1;
 		margin-right: 3px;
 	}
 `;
+
 
 /**
  * Компонент
@@ -29,7 +31,7 @@ const App = () => {
 		{
 			label: 'Im first post',
 			important: false,
-			id: 'gdfaf',
+			id: 'gdfdd',
 		},
 		{
 			label: 'Im second post',
