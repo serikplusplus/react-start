@@ -1,5 +1,6 @@
 import React from 'react';
 import PostListItem from '../post-list-item';
+import { ListGroup, ListGroupItem } from 'reactstrap';
 import './post-list.css';
 
 /**
@@ -15,13 +16,13 @@ const PostList = ({ posts }) => {
 		//key - уникальный идентификатор поста
 		const { id, ...itemProps } = post;
 		return (
-			<li key={id} className="list-group-item">
+			<ListGroupItem key={id}>
 				<PostListItem {...itemProps} />
-			</li>
+			</ListGroupItem>
 		);
 	});
 
-	return <ul className="app-list list-group">{elements}</ul>;
+	return <ListGroup className="app-list">{elements}</ListGroup>;
 };
 
 export default PostList;

@@ -6,6 +6,19 @@ import PostList from '../post-list';
 import PostAddForm from '../post-add-form';
 
 import './app.css';
+import styled from 'styled-components';
+
+//Обертка для панельки поиска
+const MainSearchPanel = styled.div`
+	display: flex;
+	margin: 1rem 0;
+
+	.search-panel .search-input {
+		width: auto;
+		flex-grow: 1;
+		margin-right: 3px;
+	}
+`;
 
 /**
  * Компонент
@@ -33,10 +46,10 @@ const App = () => {
 	return (
 		<div className="app">
 			<AppHeader />
-			<div className="search-panel d-flex">
+			<MainSearchPanel>
 				<SearchPanel />
 				<PostStatusFilter />
-			</div>
+			</MainSearchPanel>
 			<PostList posts={data} />
 			<PostAddForm />
 		</div>
