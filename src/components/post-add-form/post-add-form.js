@@ -1,5 +1,11 @@
 import React from 'react';
+import './post-add-form.css';
 
+/**
+ * Компонент
+ * Форма дабовления нового поста
+ * @returns
+ */
 const PostAddForm = () => {
 	return (
 		<form className="bottom-panel d-flex">

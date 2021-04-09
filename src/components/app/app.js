@@ -7,7 +7,29 @@ import PostAddForm from '../post-add-form';
 
 import './app.css';
 
+/**
+ * Компонент
+ * Приложение
+ */
 const App = () => {
+	const data = [
+		{
+			label: 'Im first post',
+			important: false,
+			id: 'gdfaf',
+		},
+		{
+			label: 'Im second post',
+			important: true,
+			id: 'vadf',
+		},
+		{
+			label: 'Im last post',
+			important: false,
+			id: 'nnnsda',
+		},
+	]; // Эмитация получение данных с сервера
+
 	return (
 		<div className="app">
 			<AppHeader />
@@ -15,7 +37,7 @@ const App = () => {
 				<SearchPanel />
 				<PostStatusFilter />
 			</div>
-			<PostList />
+			<PostList posts={data} />
 			<PostAddForm />
 		</div>
 	);

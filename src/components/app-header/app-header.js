@@ -1,5 +1,11 @@
 import React from 'react';
+import './app-header.css';
 
+/**
+ * Компонент
+ * Шапка
+ * @returns
+ */
 const AppHeader = () => {
 	return (
 		<div className="app-header d-flex">
