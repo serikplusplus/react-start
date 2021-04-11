@@ -6,7 +6,7 @@ import './app-header.css';
  * Шапка
  * @returns
  */
-const AppHeader = ({ ofliked, counterPosts: allPosts }) => {
+const AppHeader = ({ ofliked, allPosts }) => {
 	return (
 		<div className="app-header d-flex">
 			<h1>Sergey Skorohod</h1>

@@ -29,34 +29,20 @@ export default class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: [
-				{
-					label: 'Im first post',
-					important: false,
-					like: false,
-					id: 1,
-				},
-				{
-					label: 'Im second post',
-					important: true,
-					like: false,
-					id: 2,
-				},
-				{
-					label: 'Im last post',
-					important: false,
-					like: false,
-					id: 3,
-				},
-			], // Эмитация получение данных с сервера
+			data: JSON.parse(localStorage.getItem('Posts')), // Эмитация получение данных с сервера
+			term: '',
+			filter: 'all',
 		};
 
-		this.maxId = 4;
+		this.maxId = localStorage.getItem('MaxId');
 		this.deleteItem = this.deleteItem.bind(this);
 		this.onAddNewPost = this.onAddNewPost.bind(this);
 		this.onToggleImportant = this.onToggleImportant.bind(this);
 		this.onToggleBeLiked = this.onToggleBeLiked.bind(this);
 		this.togglePropertyData = this.togglePropertyData.bind(this);
+		this.clearAllPosts = this.clearAllPosts.bind(this);
+		this.onUpdateSearch = this.onUpdateSearch.bind(this);
+		this.onUpdateFilter = this.onUpdateFilter.bind(this);
 	}
 
 	/**
@@ -66,13 +52,23 @@ export default class App extends Component {
 	deleteItem(id) {
 		this.setState(({ data }) => {
 			const index = data.findIndex(element => element.id === id);
-
-			//Не изменяем state.data на прямую ,а создаем новые данные на основе имеющихся
-			//const before = data.slice(0, index); //элементы до удаляемого
-			//const after = data.slice(index + 1); //элементы после удаляемого
 			const newArr = [...data.slice(0, index), ...data.slice(index + 1)]; //новый массив без удаленного элемента
-
+			localStorage.setItem('Posts', JSON.stringify(newArr));
 			//Заменяем прошлые данные на новые
+			return {
+				data: newArr,
+			};
+		});
+	}
+
+	/**
+	 * Удаление всех постов
+	 */
+	clearAllPosts() {
+		this.setState(({ data }) => {
+			const newArr = [];
+			localStorage.setItem('Posts', JSON.stringify(newArr));
+			localStorage.setItem('MaxId', 0);
 			return {
 				data: newArr,
 			};
@@ -91,6 +87,7 @@ export default class App extends Component {
 			const oldValue = data[index];
 			const newValue = { ...oldValue, [key]: !oldValue[key] };
 			const newArr = [...data.slice(0, index), newValue, ...data.slice(index + 1)];
+			localStorage.setItem('Posts', JSON.stringify(newArr));
 			return {
 				data: newArr,
 			};
@@ -108,8 +105,11 @@ export default class App extends Component {
 			like: false,
 			id: this.maxId++,
 		};
+
 		this.setState(({ data }) => {
 			const newArr = [...data, newPost];
+			localStorage.setItem('MaxId', this.maxId);
+			localStorage.setItem('Posts', JSON.stringify(newArr));
 			return {
 				data: newArr,
 			};
@@ -132,22 +132,68 @@ export default class App extends Component {
 		this.togglePropertyData(id, 'like');
 	}
 
+	/**
+	 * Поиск постов
+	 * @param {*} items - посты
+	 * @param {*} text - искаемый текст
+	 * @returns - подходящие посты
+	 */
+	searchPost(items, term) {
+		if (term.length === 0) return items;
+		return items.filter(elem => {
+			return elem.label.indexOf(term) > -1;
+		});
+	}
+
+	/**
+	 * Фильтрация постов
+	 * @param {*} items - список постов
+	 * @param {*} filter - фильтер
+	 * @returns - подходящие посты
+	 */
+	filerPost(items, filter) {
+		if (filter === 'like') {
+			return items.filter(elem => elem.like);
+		}
+		if (filter === 'important') {
+			return items.filter(elem => elem.important);
+		}
+		return items;
+	}
+
+	/**
+	 * Обновление значения поиска
+	 * @param {*} term - строка для поиска
+	 */
+	onUpdateSearch(term) {
+		this.setState({ term });
+	}
+	/**
+	 * Обновление значения фильтра постов
+	 * @param {*} filter - название фильтра
+	 */
+	onUpdateFilter(filter) {
+		this.setState({ filter });
+	}
+
 	render() {
-		const { data } = this.state;
+		const { data, term, filter } = this.state;
 		const likedPosts = this.state.data.filter(elem => elem.like).length;
 		const allPosts = this.state.data.length;
+		let visiblePosts = this.filerPost(this.searchPost(data, term), filter);
 		return (
 			<div className="app">
-				<AppHeader ofliked={likedPosts} counterPosts={allPosts} />
+				<AppHeader ofliked={likedPosts} allPosts={allPosts} />
 				<MainSearchPanel>
-					<SearchPanel />
-					<PostStatusFilter />
+					<SearchPanel onUpdateSearch={this.onUpdateSearch} />
+					<PostStatusFilter filter={filter} onUpdateFilter={this.onUpdateFilter} />
 				</MainSearchPanel>
 				<PostList
-					posts={data}
+					posts={visiblePosts}
 					onDelete={this.deleteItem}
 					onToggleImportant={this.onToggleImportant}
 					onToggleBeLiked={this.onToggleBeLiked}
+					clearAllPosts={this.clearAllPosts}
 				/>
 				<PostAddForm onAddNewPost={this.onAddNewPost} />
 			</div>

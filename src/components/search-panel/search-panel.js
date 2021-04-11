@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './search-panel.css';
 
 /**
@@ -6,8 +6,29 @@ import './search-panel.css';
  * Панелька поиска постов
  * @returns
  */
-const SearchPanel = () => {
-	return <input type="text" className="form-control search-input" placeholder="Search" />;
-};
+export default class SearchPanel extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			searchInPosts: '',
+		};
+		this.onChangeSearch = this.onChangeSearch.bind(this);
+	}
 
-export default SearchPanel;
+	onChangeSearch(event) {
+		const searchInPosts = event.target.value;
+		this.setState({ searchInPosts });
+		this.props.onUpdateSearch(searchInPosts);
+	}
+
+	render() {
+		return (
+			<input
+				type="text"
+				className="form-control search-input"
+				placeholder="Search"
+				onChange={this.onChangeSearch}
+			/>
+		);
+	}
+}
