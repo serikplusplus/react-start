@@ -56,6 +56,7 @@ export default class App extends Component {
 		this.onAddNewPost = this.onAddNewPost.bind(this);
 		this.onToggleImportant = this.onToggleImportant.bind(this);
 		this.onToggleBeLiked = this.onToggleBeLiked.bind(this);
+		this.togglePropertyData = this.togglePropertyData.bind(this);
 	}
 
 	/**
@@ -78,6 +79,28 @@ export default class App extends Component {
 		});
 	}
 
+	/**
+	 * Toggle свойств data
+	 * @param {*} id - номер обьекта
+	 * @param {*} key - свойство для toggle
+	 */
+	togglePropertyData(id, key) {
+		this.setState(({ data }) => {
+			const index = data.findIndex(element => element.id === id);
+
+			const oldValue = data[index];
+			const newValue = { ...oldValue, [key]: !oldValue[key] };
+			const newArr = [...data.slice(0, index), newValue, ...data.slice(index + 1)];
+			return {
+				data: newArr,
+			};
+		});
+	}
+
+	/**
+	 * Добавление новго поста
+	 * @param {*} newPostText - текст поста
+	 */
 	onAddNewPost(newPostText) {
 		const newPost = {
 			label: newPostText,
@@ -93,30 +116,20 @@ export default class App extends Component {
 		});
 	}
 
+	/**
+	 * Переключение важности поста
+	 * @param {*} id - порядковый номер поста
+	 */
 	onToggleImportant(id) {
-		this.setState(({ data }) => {
-			const index = data.findIndex(element => element.id === id);
-
-			const oldValue = data[index];
-			const newValue = { ...oldValue, important: !oldValue.important };
-			const newArr = [...data.slice(0, index), newValue, ...data.slice(index + 1)];
-			return {
-				data: newArr,
-			};
-		});
+		this.togglePropertyData(id, 'important');
 	}
 
+	/**
+	 * Переключение понравилось у поста
+	 * @param {*} id - порядковый номер поста
+	 */
 	onToggleBeLiked(id) {
-		this.setState(({ data }) => {
-			const index = data.findIndex(element => element.id === id);
-
-			const oldValue = data[index];
-			const newValue = { ...oldValue, like: !oldValue.like };
-			const newArr = [...data.slice(0, index), newValue, ...data.slice(index + 1)];
-			return {
-				data: newArr,
-			};
-		});
+		this.togglePropertyData(id, 'like');
 	}
 
 	render() {
