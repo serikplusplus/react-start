@@ -43,7 +43,28 @@ const App = () => {
 			important: false,
 			id: 'nnnsda',
 		},
+		this.deleteItem = this.deleteItem.bind(this);
 		this.onAddNewPost = this.onAddNewPost.bind(this);
+
+	/**
+	 * Удаление элемента списка
+	 * @param {*} id - id элемента => Приходит из post-list.jsx <PostListItem onDelete={() => onDelete(id)} {...itemProps} />
+	 */
+	deleteItem(id) {
+		this.setState(({ data }) => {
+			const index = data.findIndex(element => element.id === id);
+
+			//Не изменяем state.data на прямую ,а создаем новые данные на основе имеющихся
+			//const before = data.slice(0, index); //элементы до удаляемого
+			//const after = data.slice(index + 1); //элементы после удаляемого
+			const newArr = [...data.slice(0, index), ...data.slice(index + 1)]; //новый массив без удаленного элемента
+
+			//Заменяем прошлые данные на новые
+			return {
+				data: newArr,
+			};
+		});
+	}
 	onAddNewPost(newPostText) {
 		const newPost = {
 			label: newPostText,
@@ -66,6 +87,7 @@ const App = () => {
 				<SearchPanel />
 				<PostStatusFilter />
 			</MainSearchPanel>
+					onDelete={this.deleteItem}
 				<PostAddForm onAddNewPost={this.onAddNewPost} />
 		</div>
 	);
