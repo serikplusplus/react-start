@@ -1,6 +1,6 @@
 import React from 'react';
 import PostListItem from '../post-list-item';
-import { ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { ListGroup, ListGroupItem, Button, Row, Col } from 'reactstrap';
 import './post-list.css';
 
 /**
@@ -9,7 +9,14 @@ import './post-list.css';
  * @param {*} props - свойства компонента
  * @returns
  */
-const PostList = ({ posts, onDelete, onToggleImportant, onToggleBeLiked, clearAllPosts }) => {
+const PostList = ({
+	posts,
+	onDelete,
+	onToggleImportant,
+	onToggleBeLiked,
+	clearAllPosts,
+	onToggleModal,
+}) => {
 	//Массив обработанных и изменненных данными с сервера элементов списка
 	const elements = posts.map(post => {
 		//Спред разбиение свойст
@@ -29,9 +36,18 @@ const PostList = ({ posts, onDelete, onToggleImportant, onToggleBeLiked, clearAl
 
 	return (
 		<ListGroup className="app-list">
-			<Button className="clear-button" outline color="danger" onClick={clearAllPosts}>
-				Очистить список
-			</Button>
+			<Row>
+				<Col>
+					<Button className="clear-button" outline color="danger" onClick={clearAllPosts}>
+						Очистить список
+					</Button>
+				</Col>
+				<Col>
+					<Button className="clear-button" outline color="success" onClick={onToggleModal}>
+						Добавить пост
+					</Button>
+				</Col>
+			</Row>
 			{elements}
 		</ListGroup>
 	);

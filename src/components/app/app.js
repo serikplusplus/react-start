@@ -32,6 +32,7 @@ export default class App extends Component {
 			data: JSON.parse(localStorage.getItem('Posts')), // Эмитация получение данных с сервера
 			term: '',
 			filter: 'all',
+			modal: false,
 		};
 
 		this.maxId = localStorage.getItem('MaxId');
@@ -43,6 +44,7 @@ export default class App extends Component {
 		this.clearAllPosts = this.clearAllPosts.bind(this);
 		this.onUpdateSearch = this.onUpdateSearch.bind(this);
 		this.onUpdateFilter = this.onUpdateFilter.bind(this);
+		this.onToggleModal = this.onToggleModal.bind(this);
 	}
 
 	/**
@@ -98,9 +100,10 @@ export default class App extends Component {
 	 * Добавление новго поста
 	 * @param {*} newPostText - текст поста
 	 */
-	onAddNewPost(newPostText) {
+	onAddNewPost(newPostLabel, newPostText) {
 		const newPost = {
-			label: newPostText,
+			label: newPostLabel,
+			text: newPostText,
 			important: false,
 			like: false,
 			id: this.maxId++,
@@ -176,6 +179,12 @@ export default class App extends Component {
 		this.setState({ filter });
 	}
 
+	onToggleModal() {
+		this.setState(({ modal }) => ({
+			modal: !modal,
+		}));
+	}
+
 	render() {
 		const { data, term, filter } = this.state;
 		const likedPosts = this.state.data.filter(elem => elem.like).length;
@@ -194,8 +203,13 @@ export default class App extends Component {
 					onToggleImportant={this.onToggleImportant}
 					onToggleBeLiked={this.onToggleBeLiked}
 					clearAllPosts={this.clearAllPosts}
+					onToggleModal={this.onToggleModal}
 				/>
-				<PostAddForm onAddNewPost={this.onAddNewPost} />
+				<PostAddForm
+					onAddNewPost={this.onAddNewPost}
+					modal={this.state.modal}
+					onToggleModal={this.onToggleModal}
+				/>
 			</div>
 		);
 	}
