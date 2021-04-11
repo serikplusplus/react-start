@@ -19,6 +19,8 @@ const PostList = ({ posts, onDelete, onToggleImportant, onToggleBeLiked }) => {
 			<ListGroupItem key={id}>
 				<PostListItem
 					onDelete={() => onDelete(id)}
+					onToggleImportant={() => onToggleImportant(id)}
+					onToggleBeLiked={() => onToggleBeLiked(id)}
 					{...itemProps}
 				/>
 			</ListGroupItem>
