@@ -6,14 +6,18 @@ import './post-add-form.css';
  * Форма дабовления нового поста
  * @returns
  */
-const PostAddForm = () => {
+const PostAddForm = ({ onAddNewPost }) => {
 	return (
-		<form className="bottom-panel d-flex">
+		<div className="bottom-panel d-flex">
 			<input type="text" className="form-control new-post-label" placeholder="Text for new post" />
-			<button type="submit" className="btn btn-outline-secondary">
+			<button
+				type="submit"
+				className="btn btn-outline-secondary"
+				onClick={() => onAddNewPost('new post')}
+			>
 				Add post
 			</button>
-		</form>
+		</div>
 	);
 };
 

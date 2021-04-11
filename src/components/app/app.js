@@ -43,7 +43,21 @@ const App = () => {
 			important: false,
 			id: 'nnnsda',
 		},
-	]; // Эмитация получение данных с сервера
+		this.onAddNewPost = this.onAddNewPost.bind(this);
+	onAddNewPost(newPostText) {
+		const newPost = {
+			label: newPostText,
+			important: false,
+			like: false,
+			id: this.maxId++,
+		};
+		this.setState(({ data }) => {
+			const newArr = [...data, newPost];
+			return {
+				data: newArr,
+			};
+		});
+	}
 
 	return (
 		<div className="app">
@@ -52,8 +66,7 @@ const App = () => {
 				<SearchPanel />
 				<PostStatusFilter />
 			</MainSearchPanel>
-			<PostList posts={data} />
-			<PostAddForm />
+				<PostAddForm onAddNewPost={this.onAddNewPost} />
 		</div>
 	);
 };
