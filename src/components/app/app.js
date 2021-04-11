@@ -121,10 +121,11 @@ export default class App extends Component {
 
 	render() {
 		const { data } = this.state;
-
+		const likedPosts = this.state.data.filter(elem => elem.like).length;
+		const allPosts = this.state.data.length;
 		return (
 			<div className="app">
-				<AppHeader />
+				<AppHeader ofliked={likedPosts} counterPosts={allPosts} />
 				<MainSearchPanel>
 					<SearchPanel />
 					<PostStatusFilter />

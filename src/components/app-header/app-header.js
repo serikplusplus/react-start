@@ -6,11 +6,13 @@ import './app-header.css';
  * Шапка
  * @returns
  */
-const AppHeader = () => {
+const AppHeader = ({ ofliked, counterPosts: allPosts }) => {
 	return (
 		<div className="app-header d-flex">
 			<h1>Sergey Skorohod</h1>
-			<h2>5 записей, понравилось 0</h2>
+			<h2>
+				{allPosts} записей, понравилось {ofliked}
+			</h2>
 		</div>
 	);
 };
